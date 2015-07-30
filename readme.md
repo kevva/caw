@@ -38,8 +38,8 @@ Type: `object`
 
 ##### protocol
 
-Type: 'string'  
-Default: 'http'
+Type: `string`  
+Default: `http`
 
 Endpoint protocol.
 
