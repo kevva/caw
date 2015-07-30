@@ -20,7 +20,7 @@ module.exports = function (proxy, opts) {
 
 	var uriProtocol = opts.protocol === 'https' ? 'https' : 'http';
 	var proxyProtocol = proxy.protocol === 'https' ? 'Https' : 'Http';
-	var port = proxy.port || (proxyProtocol === 'https' ? 443 : 80);
+	var port = proxy.port || (proxyProtocol === 'Https' ? 443 : 80);
 	var method = [uriProtocol, proxyProtocol].join('Over');
 
 	delete opts.protocol;
