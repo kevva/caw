@@ -41,6 +41,29 @@ test('setup http proxy', function (t) {
 	proxy.listen(proxyPort, t.end);
 });
 
+test('reassigned args', function (t) {
+	var origProxy = process.env.HTTP_PROXY;
+	process.env.HTTP_PROXY = 'http://0.0.0.0:8000';
+
+	var agent = caw(undefined, {
+		protocol: 'http'
+	});
+
+	http.get({
+		hostname: 'google.com',
+		agent: agent
+	}, function (res) {
+		res.on('data', function (chunk) {
+			t.equal(chunk.toString(), 'Hello proxy');
+			process.env.HTTP_PROXY = origProxy;
+			t.end();
+		});
+	}).on('error', function (e) {
+		process.env.HTTP_PROXY = origProxy;
+		t.error(e);
+	});
+});
+
 test('http proxy', function (t) {
 	var agent = caw('http://0.0.0.0:8000');
 
