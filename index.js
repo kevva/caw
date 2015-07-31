@@ -5,7 +5,7 @@ var objectAssign = require('object-assign');
 var tunnelAgent = require('tunnel-agent');
 
 module.exports = function (proxy, opts) {
-	opts = opts || {};
+	opts = objectAssign({}, opts);
 
 	if (typeof proxy !== 'string') {
 		opts = proxy;
