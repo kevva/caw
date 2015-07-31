@@ -3,12 +3,15 @@ var url = require('url');
 var getProxy = require('get-proxy');
 var objectAssign = require('object-assign');
 var tunnelAgent = require('tunnel-agent');
+var isObj = require('is-obj');
 
 module.exports = function (proxy, opts) {
 	opts = objectAssign({}, opts);
 
-	if (typeof proxy !== 'string') {
+	if (isObj(proxy)) {
 		opts = proxy;
+		proxy = getProxy();
+	} else if (proxy === undefined) {
 		proxy = getProxy();
 	}
 
