@@ -8,7 +8,7 @@ var proxyPort = 8000;
 var server;
 var proxy;
 
-test('return undefiend, if not proxy around', function (t) {
+test('return undefined, if not proxy around', function (t) {
 	t.equal(caw(), undefined);
 	t.end();
 });
@@ -23,7 +23,7 @@ test('setup http server', function (t) {
 });
 
 test('setup http proxy', function (t) {
-	proxy = http.createServer(function (req, res) {});
+	proxy = http.createServer(function () {});
 	proxy.on('connect', onConnect);
 
 	function onConnect(req, clientSocket, head) {

@@ -5,12 +5,12 @@
   "license": "MIT",
   "repository": "kevva/caw",
   "author": {
-    "name": "Kevin Mårtensson",
     "email": "kevinmartensson@gmail.com",
+    "name": "Kevin Mårtensson",
     "url": "github.com/kevva"
   },
   "scripts": {
-    "test": "tap test.js -t2"
+    "test": "xo && tap test.js -t2"
   },
   "engines": {
     "node": ">=0.10.0"
@@ -30,6 +30,7 @@
     "tunnel-agent": "^0.4.0"
   },
   "devDependencies": {
-    "tap": "^1.3.1"
+    "tap": "^1.3.1",
+    "xo": "*"
   }
 }

@@ -13,7 +13,7 @@ module.exports = function (proxy, opts) {
 	}
 
 	if (!proxy) {
-		return;
+		return undefined;
 	}
 
 	proxy = url.parse(proxy);
