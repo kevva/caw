@@ -22,7 +22,7 @@ module.exports = function (proxy, opts) {
 	proxy = url.parse(proxy);
 
 	var uriProtocol = opts.protocol === 'https' ? 'https' : 'http';
-	var proxyProtocol = proxy.protocol === 'https' ? 'Https' : 'Http';
+	var proxyProtocol = proxy.protocol === 'https:' ? 'Https' : 'Http';
 	var port = proxy.port || (proxyProtocol === 'Https' ? 443 : 80);
 	var method = [uriProtocol, proxyProtocol].join('Over');
 
