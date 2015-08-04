@@ -4,6 +4,8 @@ var http = require('http');
 var https = require('https');
 var fs = require('fs');
 var path = require('path');
+var sinon = require('sinon');
+var proxyquire = require('proxyquire');
 var test = require('tap').test;
 var caw = require('./');
 var serverPort = 9000;
@@ -130,6 +132,42 @@ test('https proxy', function (t) {
 	}).on('error', function (e) {
 		t.error(e);
 	});
+});
+
+test('tunnel methods', function (t) {
+	var httpOverHttpSpy = sinon.spy();
+	var httpsOverHttpSpy = sinon.spy();
+	var httpOverHttpsSpy = sinon.spy();
+	var httpsOverHttpsSpy = sinon.spy();
+
+	var _caw = proxyquire('./index.js', {
+		'tunnel-agent': {
+			httpOverHttp: httpOverHttpSpy,
+			httpsOverHttp: httpsOverHttpSpy,
+			httpOverHttps: httpOverHttpsSpy,
+			httpsOverHttps: httpsOverHttpsSpy
+		}
+	});
+
+	_caw('http://0.0.0.0:8000');
+	t.equal(httpOverHttpSpy.calledOnce, true);
+
+	_caw('http://0.0.0.0:8000', {
+		protocol: 'https:'
+	});
+	t.equal(httpsOverHttpSpy.calledOnce, true);
+
+	_caw('https://0.0.0.0:5000', {
+		protocol: 'http:'
+	});
+	t.equal(httpOverHttpsSpy.calledOnce, true);
+
+	_caw('https://0.0.0.0:5000', {
+		protocol: 'https:'
+	});
+	t.equal(httpsOverHttpsSpy.calledOnce, true);
+
+	t.end();
 });
 
 test('cleanup', function (t) {
