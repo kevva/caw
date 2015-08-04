@@ -1,6 +1,6 @@
 {
   "name": "caw",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "Construct HTTP/HTTPS agents for tunneling proxies",
   "license": "MIT",
   "repository": "kevva/caw",
