@@ -1,37 +1,34 @@
 'use strict';
-var url = require('url');
-var getProxy = require('get-proxy');
-var objectAssign = require('object-assign');
-var tunnelAgent = require('tunnel-agent');
-var isObj = require('is-obj');
+const url = require('url');
+const getProxy = require('get-proxy');
+const tunnelAgent = require('tunnel-agent');
 
-module.exports = function (proxy, opts) {
-	opts = objectAssign({}, opts);
+module.exports = (proxy, opts) => {
+	proxy = proxy || getProxy();
+	opts = Object.assign({}, opts);
 
-	if (isObj(proxy)) {
+	if (typeof proxy === 'object') {
 		opts = proxy;
-		proxy = getProxy();
-	} else if (proxy === undefined) {
 		proxy = getProxy();
 	}
 
 	if (!proxy) {
-		return undefined;
+		return null;
 	}
 
 	proxy = url.parse(proxy);
 
-	var uriProtocol = opts.protocol === 'https' ? 'https' : 'http';
-	var proxyProtocol = proxy.protocol === 'https:' ? 'Https' : 'Http';
-	var port = proxy.port || (proxyProtocol === 'Https' ? 443 : 80);
-	var method = [uriProtocol, proxyProtocol].join('Over');
+	const uriProtocol = opts.protocol === 'https' ? 'https' : 'http';
+	const proxyProtocol = proxy.protocol === 'https:' ? 'Https' : 'Http';
+	const port = proxy.port || (proxyProtocol === 'Https' ? 443 : 80);
+	const method = `${uriProtocol}Over${proxyProtocol}`;
 
 	delete opts.protocol;
 
-	return tunnelAgent[method](objectAssign({
+	return tunnelAgent[method](Object.assign({
 		proxy: {
+			port,
 			host: proxy.hostname,
-			port: port,
 			proxyAuth: proxy.auth
 		}
 	}, opts));
