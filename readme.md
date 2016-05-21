@@ -13,34 +13,32 @@ $ npm install --save caw
 ## Usage
 
 ```js
-var caw = require('caw');
-var got = require('got');
+const caw = require('caw');
+const got = require('got');
 
 got('todomvc.com', {
 	agent: caw()
-}, function () {});
+}, () => {});
 ```
 
 
 ## API
 
-### caw(proxy, options)
+### caw([proxy], [options])
 
 #### proxy
 
 Type: `string`
 
-Proxy URL.
+Proxy URL. If not set, it'll try getting it using [`get-proxy`](https://github.com/kevva/get-proxy).
 
 #### options
-
-Type: `object`
 
 Besides the options below, you can pass in options allowed in [tunnel-agent](https://github.com/koichik/node-tunnel).
 
 ##### protocol
 
-Type: `string`  
+Type: `string`<br>
 Default: `http`
 
 Endpoint protocol.
