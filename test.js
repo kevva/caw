@@ -6,7 +6,7 @@ import proxyquire from 'proxyquire';
 import sinon from 'sinon';
 import test from 'ava';
 import {createServer, createSSLServer, createProxy, createSSLProxy} from './fixtures/util';
-import m from './';
+import m from '.';
 
 const fsP = pify(fs);
 
@@ -76,7 +76,7 @@ test('tunnel methods', t => {
 	const httpsOverHttpSpy = sinon.spy();
 	const httpOverHttpsSpy = sinon.spy();
 	const httpsOverHttpsSpy = sinon.spy();
-	const caw = proxyquire('./', {
+	const caw = proxyquire('.', {
 		'tunnel-agent': {
 			httpOverHttp: httpOverHttpSpy,
 			httpsOverHttp: httpsOverHttpSpy,
