@@ -34,7 +34,7 @@ Proxy URL. If not set, it'll try getting it using [`get-proxy`](https://github.c
 
 #### options
 
-Besides the options below, you can pass in options allowed in [tunnel-agent](https://github.com/koichik/node-tunnel).
+Besides the options below, you can pass in options allowed in [tunnel-agent](https://github.com/request/tunnel-agent).
 
 ##### protocol
 
