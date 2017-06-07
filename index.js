@@ -1,7 +1,9 @@
 'use strict';
 const url = require('url');
 const getProxy = require('get-proxy');
+const isurl = require('isurl');
 const tunnelAgent = require('tunnel-agent');
+const urlToOptions = require('url-to-options');
 
 module.exports = (proxy, opts) => {
 	proxy = proxy || getProxy();
@@ -16,7 +18,7 @@ module.exports = (proxy, opts) => {
 		return null;
 	}
 
-	proxy = url.parse(proxy);
+	proxy = isurl.lenient(proxy) ? urlToOptions(proxy) : url.parse(proxy);
 
 	const uriProtocol = opts.protocol === 'https' ? 'https' : 'http';
 	const proxyProtocol = proxy.protocol === 'https:' ? 'Https' : 'Http';

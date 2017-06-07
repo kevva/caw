@@ -5,6 +5,7 @@ import pify from 'pify';
 import proxyquire from 'proxyquire';
 import sinon from 'sinon';
 import test from 'ava';
+import {URL} from 'universal-url';
 import {createServer, createSSLServer, createProxy, createSSLProxy} from './fixtures/util';
 import m from '.';
 
@@ -67,6 +68,13 @@ test.skip('https proxy', async t => {
 		agent,
 		rejectUnauthorized: false
 	});
+
+	t.is(body, 'ok');
+});
+
+test('supports WHATWG urls', async t => {
+	const agent = m(new URL(proxyServer.url));
+	const {body} = await got('google.com', {agent});
 
 	t.is(body, 'ok');
 });
