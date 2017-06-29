@@ -16,45 +16,33 @@ const onConnect = port => (req, socket, head) => {
 	s.on('end', () => socket.end());
 };
 
-exports.createServer = () => getPort().then(port => {
-	const s = http.createServer((req, res) => {
+const createServer = ssl => () => getPort().then(port => {
+	const protocol = ssl ? 'https' : 'http';
+	const type = ssl ? https : http;
+	const s = type.createServer((req, res) => {
 		res.writeHead(200);
 		res.end('ok');
 	});
 
 	s.host = 'localhost';
 	s.port = port;
-	s.url = `http://${s.host}:${port}`;
-	s.protocol = 'http';
+	s.url = `${protocol}://${s.host}:${port}`;
+	s.protocol = protocol;
 	s.listen = pify(s.listen);
 	s.close = pify(s.close);
 
 	return s;
 });
 
-exports.createSSLServer = () => getPort().then(port => {
-	const s = https.createServer((req, res) => {
-		res.writeHead(200);
-		res.end('ok');
-	});
-
-	s.host = 'localhost';
-	s.port = port;
-	s.url = `https://${s.host}:${port}`;
-	s.protocol = 'https';
-	s.listen = pify(s.listen);
-	s.close = pify(s.close);
-
-	return s;
-});
-
-exports.createProxy = serverPort => getPort().then(port => {
-	const p = http.createServer(() => {});
+const createProxy = ssl => (serverPort, opts) => getPort().then(port => {
+	const protocol = ssl ? 'https' : 'http';
+	const type = ssl ? https : http;
+	const p = type.createServer(opts, () => {});
 
 	p.host = 'localhost';
 	p.port = port;
-	p.url = `http://${p.host}:${port}`;
-	p.protocol = 'http';
+	p.url = `${protocol}://${p.host}:${port}`;
+	p.protocol = protocol;
 	p.listen = pify(p.listen);
 	p.close = pify(p.close);
 
@@ -63,17 +51,7 @@ exports.createProxy = serverPort => getPort().then(port => {
 	return p;
 });
 
-exports.createSSLProxy = (serverPort, opts) => getPort().then(port => {
-	const p = https.createServer(opts, () => {});
-
-	p.host = 'localhost';
-	p.port = port;
-	p.url = `https://${p.host}:${port}`;
-	p.protocol = 'https';
-	p.listen = pify(p.listen);
-	p.close = pify(p.close);
-
-	p.on('connect', onConnect(serverPort));
-
-	return p;
-});
+exports.createServer = createServer();
+exports.createSSLServer = createServer(true);
+exports.createProxy = createProxy();
+exports.createSSLProxy = createProxy(true);
