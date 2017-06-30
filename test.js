@@ -1,29 +1,25 @@
-import fs from 'fs';
-import path from 'path';
 import got from 'got';
-import pify from 'pify';
 import proxyquire from 'proxyquire';
 import sinon from 'sinon';
 import test from 'ava';
 import {URL} from 'universal-url';
+import createCert from 'create-cert';
 import {createServer, createSSLServer, createProxy, createSSLProxy} from './fixtures/util';
 import m from '.';
-
-const fsP = pify(fs);
 
 let httpServer;
 let httpsServer;
 let proxyServer;
 let proxySSLServer;
+let keys;
 
 test.before(async () => {
-	const cert = await fsP.readFile(path.join(__dirname, 'fixtures', 'certificate.pem'), 'utf8');
-	const key = await fsP.readFile(path.join(__dirname, 'fixtures', 'privatekey.pem'), 'utf8');
+	keys = await createCert();
 
 	httpServer = await createServer();
 	httpsServer = await createSSLServer();
 	proxyServer = await createProxy(httpServer.port);
-	proxySSLServer = await createSSLProxy(httpsServer.port, {key, cert});
+	proxySSLServer = await createSSLProxy(httpsServer.port, {key: keys.key, cert: keys.cert});
 
 	await httpServer.listen(httpServer.port);
 	await proxyServer.listen(proxyServer.port);

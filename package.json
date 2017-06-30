@@ -32,6 +32,7 @@
   },
   "devDependencies": {
     "ava": "*",
+    "create-cert": "^1.0.4",
     "get-port": "^3.1.0",
     "got": "^7.0.0",
     "pify": "^3.0.0",
