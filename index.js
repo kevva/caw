@@ -2,7 +2,7 @@
 const url = require('url');
 const getProxy = require('get-proxy');
 const isurl = require('isurl');
-const tunnelAgent = require('tunnel-agent');
+const tunnel = require('tunnel');
 const urlToOptions = require('url-to-options');
 
 module.exports = (proxy, opts) => {
@@ -27,7 +27,7 @@ module.exports = (proxy, opts) => {
 
 	delete opts.protocol;
 
-	return tunnelAgent[method](Object.assign({
+	return tunnel[method](Object.assign({
 		proxy: {
 			port,
 			host: proxy.hostname,

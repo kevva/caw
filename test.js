@@ -81,7 +81,7 @@ test('tunnel methods', t => {
 	const httpOverHttpsSpy = sinon.spy();
 	const httpsOverHttpsSpy = sinon.spy();
 	const caw = proxyquire('.', {
-		'tunnel-agent': {
+		tunnel: {
 			httpOverHttp: httpOverHttpSpy,
 			httpsOverHttp: httpsOverHttpSpy,
 			httpOverHttps: httpOverHttpsSpy,
